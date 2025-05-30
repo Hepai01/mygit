@@ -1,0 +1,12 @@
+export type likeList_type = {
+	id: number;
+	title: string;
+	img: string;
+	tag: string[];
+	isDot: string;
+	dot: boolean;
+	introduce: string;
+	times: string;
+	isPlay: boolean | null;
+	address: string[] | null;
+}

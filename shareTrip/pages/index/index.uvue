@@ -1,0 +1,174 @@
+<template>
+	<view class="content">
+		<uv-search placeholder="请输入搜索内容" v-model="keyword"></uv-search>
+		<uv-swiper
+			v-if="bannerList.length"
+			:list="bannerList" 
+			keyName="image" 
+			showTitle 
+			style="margin-top: 20rpx;" 
+			:autoplay="true"
+			radius="8"
+			height="160"
+			circular></uv-swiper>
+			<uv-notice-bar style="margin-top: 20rpx;" text="数据仅供参考，图标来自igoutu.cn" ></uv-notice-bar>
+			<view class="list">
+				<uv-waterfall ref="waterfall"
+					v-model="flowList"
+					:column-gap="10"
+					@changeList="changeList">
+					<template v-slot:list1>
+						<view>
+							<view class="demo-water" v-for="(item, index) in dataList.list1" @click="forDetail(item)">
+								<uv-image :width="item.width" :src="item.img" mode="widthFix" radius="10"></uv-image>
+								<view class="demo-box">
+									<view class="demo-title">
+										{{item.title}}
+									</view>
+									<view class="demo-time">
+										{{item.times}}
+									</view>
+									<view class="demo-tag">
+										<view class="demo-tag-owner">{{item.tag[0]}}</view>
+										<view class="demo-tag-text">{{item.tag[1]}}</view>
+									</view>
+								</view>
+								<view class="isDot" v-if="item.isDot">{{item.isDot}}</view>
+							</view>
+						</view>
+					</template>
+					<template v-slot:list2>
+						<view>
+							<view class="demo-water" v-for="(item, index) in dataList.list2" @click="forDetail(item)">
+								<uv-image :width="item.width" :src="item.img" mode="widthFix" radius="10"></uv-image>
+								<view class="demo-box">
+									<view class="demo-title">
+										{{item.title}}
+									</view>
+									<view class="demo-time">
+										{{item.times}}
+									</view>
+									<view class="demo-tag">
+										<view class="demo-tag-owner">{{item.tag[0]}}</view>
+										<view class="demo-tag-text">{{item.tag[1]}}</view>
+									</view>
+								</view>
+								<view class="isDot" v-if="item.isDot">{{item.isDot}}</view>
+							</view>
+						</view>
+					</template>
+				</uv-waterfall>
+			</view>
+	</view>
+</template>
+
+<script setup>
+	import { getBanner, getHomeList } from '../../api/api';
+	import { BannerList_type, BannerList_Data_type, HomeList_type } from '../../api/homeType.uts'
+	const keyword = ref('')
+	//轮播图
+	const bannerList = ref<BannerList_type[]>([])
+	// 景点列表
+	const flowList = ref<HomeList_type[]>([])
+	const dataList = reactive({
+		list1: [],
+		list2: []
+	})
+	onLoad(() =>{
+		getBanner().then((res:BannerList_Data_type) => {
+			console.log(res,'page')
+			bannerList.value = res.bannerList
+		})
+		getHomeList().then((res:HomeList_type[]) => {
+			console.log(res, 'homelist')
+			flowList.value = res
+		})
+	})
+	// 触底事件
+	onReachBottom(() => {
+		console.log("触底加载")
+		addData()
+	})
+	const addData = () => {
+		// 模拟触底后后端返回下一页
+		for(let i = 0; i < 10; i++){
+			const index = uni.$uv.random(0, flowList.value.length - 1)
+			let item = JSON.parse(JSON.stringify(flowList.value[index]))
+			// 设置唯一标识符
+			item.id = uni.$uv.guid()
+			flowList.value.push(item)
+		}
+	}
+	const changeList = (e: UTSJSONObject) =>{
+		dataList[e.name].push(e.value);
+	}
+	const forDetail = (item: HomeList_type) =>{
+		//console.log(item)
+		const can = JSON.stringify(item)
+		uni.navigateTo({
+			url: `/pages/detail/detail?item=${encodeURIComponent(can)}`
+		})
+	}
+</script>
+
+<style lang="scss" scoped>
+	.content{
+		padding: 20rpx 20rpx;
+		background-color: #f0f0f0;
+	}
+	.demo-water {
+		border-radius: 10px 10px 0 0;
+		margin-bottom: 10rpx;
+		background-color: #fff;
+		position: relative;
+		.demo-box {
+			padding: 0 10rpx 20rpx 10rpx;	
+			.demo-title {
+				font-size: 30rpx;
+				margin-top: 10rpx;
+				color: #303133;
+			}
+			.demo-time{
+				font-size: 24rpx;
+				color: #777;
+				margin-top: 10rpx;
+			}
+		}
+		.demo-tag{
+			display: flex;
+			flex-direction: row;
+			margin-top: 10rpx;
+			.demo-tag-owner{
+				border: 1px solid #fca381;
+				color: #ffaa00;
+				font-size: 20rpx;
+				display: flex;
+				align-items: center;
+				padding: 4rpx 14rpx;
+				border-radius: 50rpx;
+			}
+			.demo-tag-text {
+			    border: 1px solid #00aaff;
+			    color: #00aaff;
+			    margin-left: 20rpx;
+			    border-radius: 50rpx;
+			    padding: 4rpx 14rpx;
+			    font-size: 20rpx;
+			    display: flex;
+			    align-items: center;
+			}
+		}
+		.isDot {
+		    position: absolute;
+		    top: 20rpx;
+		    right: 20rpx;
+		    font-size: 24rpx;
+		    color: #fff;
+		    line-height: 32rpx;
+		    background-color: #ff0000;
+		    text-align: center;
+		    border-radius: 10rpx;
+		    padding: 4rpx 10rpx;
+		}
+	}
+</style>

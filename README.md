@@ -4,13 +4,14 @@
 包含作者参与开发的一些项目
 
 #### 软件架构
-关于武汉学院新闻项目，前端代码为boot-vue,后端代码为boot_vue
+关于collegeNews项目，前端代码为boot-vue,后端代码为boot_vue，shareTrip为uniappx项目
 
 
 #### 安装教程
 
 1.  后端文件用idea打开后初试化pom.xml用maven安装依赖
 2.  前端文件用node在总目录处打开后执行npm -install
+3.  shareTrip项目需在HBuild X中安装uv-vi、uni-icons、uni-list
 
 #### 使用说明
 

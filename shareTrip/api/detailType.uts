@@ -1,0 +1,30 @@
+export type projectList_type = {
+	id: number;
+	url: string;
+	tag: string;
+	title: string;
+	desc: string;
+}
+
+type Markers = {
+	id: number;
+	latitude: number;
+	longitude: number;
+	width: number;
+	height: number;
+}
+
+type Other = {
+	id: number;
+	name: string;
+	url: string;
+}
+
+export type projectInfo_type = {
+	id: number;
+	location: number[];
+	title: string;
+	count: number;
+	markers: Markers[];
+	other: Other[];
+}

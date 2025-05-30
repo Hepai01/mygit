@@ -1,0 +1,28 @@
+export type BannerList_type = {
+	image: string;
+	title: string;
+}
+
+export type BannerList_Data_type = {
+	bannerList: BannerList_type[];
+}
+
+export type HomeList_type = {
+	id: number;
+	title: string;
+	img: string;
+	tag: string[];
+	isDot: string;
+	dot: boolean;
+	introduce: string;
+	times: string;
+	isPlay: boolean | null;
+	address: string[] | null;
+}
+type _data = {
+	id: number;
+	url: string;
+	tag: string;
+	title: string;
+	desc: string;
+}

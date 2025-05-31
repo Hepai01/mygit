@@ -52,7 +52,7 @@
       <artifactId>java-jwt</artifactId>
       <version>4.4.0</version>
     </dependency>
-    <!--单元测试目标-->
+    <!--单元测试坐标-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -62,6 +62,11 @@
       <groupId>com.github.pagehelper</groupId>
       <artifactId>pagehelper-spring-boot-starter</artifactId>
       <version>1.4.6</version>
+    </dependency>
+    <!--redis坐标-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

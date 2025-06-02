@@ -17,7 +17,7 @@ public class FileUploadController {
         //保证文件名唯一从而防止覆盖
         assert originalFilename != null;
         String filename = UUID.randomUUID().toString()+originalFilename.substring(originalFilename.lastIndexOf("."));
-        file.transferTo(new File("D:\\60文件\\zy\\ps\\"+filename));
-        return Result.success("D:\\60文件\\zy\\ps\\"+filename);
+        file.transferTo(new File("D:\\newone\\vcode\\boot-vue\\src\\assets\\"+filename));
+        return Result.success(filename);
     }
 }

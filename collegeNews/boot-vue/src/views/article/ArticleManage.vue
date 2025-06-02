@@ -287,9 +287,9 @@ const deleteArticle = (row) => {
                 </el-form-item>
                 <el-form-item label="文章封面">
 
-                    <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false" action="/api/upload"
+                    <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="true" action="/api/upload"
                         name="file" :headers="{ 'Authorization': tokenStore.token }" :on-success="uploadSuccess">
-                        <img v-if="articleModel.coverImg" :src="articleModel.coverImg" class="avatar" />
+                        <img v-if="articleModel.coverImg" :src="`../src/assets/${articleModel.coverImg}`" class="avatar" />
                         <el-icon v-else class="avatar-uploader-icon">
                             <Plus />
                         </el-icon>

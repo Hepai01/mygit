@@ -44,12 +44,25 @@ const handleCommand = (command) => {
                 message: '取消登出',
             })
         })
+    }else{
+        //路由跳转
+        router.push('/user/'+command);
     }
 }
-//全局vuex
-import { useStore } from 'vuex';
-const store = useStore();
-const count = store.state.count;
+
+//获取用户信息
+import { userInfoService } from '@/api/user';
+import useUserInfoStore from '@/stores/userInfo';
+const userInfoStore = useUserInfoStore();
+const getUserInfo = async ()=>{
+    //调用接口获取用户信息
+    let res = await userInfoService();
+    //保存到pinia中
+    userInfoStore.setInfo(res.data);
+    console.log(res.data)
+}
+getUserInfo();
+console.log('userInfo='+userInfoStore.userInfo.nickname)
 </script>
 
 <template>
@@ -104,20 +117,20 @@ const count = store.state.count;
         <el-container>
             <!-- 头部区域 -->
             <el-header>
-                <div>武汉学院：<strong>小明同学</strong></div>
+                <div>武汉学院：<strong>{{ userInfoStore.userInfo.nickname }}</strong><strong>同学</strong></div>
                 <!-- 下拉菜单 -->
                 <el-dropdown placement="bottom-end" @command="handleCommand">
                     <span class="el-dropdown__box">
-                        <el-avatar :src="avatar" />
+                        <el-avatar :src="`../src/assets/${userInfoStore.userInfo.userPic}`" />
                         <el-icon>
                             <CaretBottom />
                         </el-icon>
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <!--<el-dropdown-item command="info" :icon="User">基本资料</el-dropdown-item>
+                            <el-dropdown-item command="info" :icon="User">基本资料</el-dropdown-item>
                             <el-dropdown-item command="avatar" :icon="Crop">更换头像</el-dropdown-item>
-                            <el-dropdown-item command="resetPassword" :icon="EditPen">重置密码</el-dropdown-item>-->
+                            <el-dropdown-item command="resetPassword" :icon="EditPen">重置密码</el-dropdown-item>
                             <el-dropdown-item command="logout" :icon="SwitchButton">退出登录</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>

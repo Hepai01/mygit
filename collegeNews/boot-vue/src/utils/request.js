@@ -21,7 +21,7 @@ instance.interceptors.request.use(
     },
     (err)=>{
         //请求前的错误回调
-        return Promise.reject(e)
+        return Promise.reject(err)
     }
 )
 import router from '@/router';
@@ -34,6 +34,7 @@ instance.interceptors.response.use(
         }
         //操作失败
         //alert(result.data.msg?result.data.msg:'服务异常');
+        console.log(result.data.msg?result.data.msg:'服务异常');
         ElMessage.error(result.data.msg?result.data.msg:'服务异常');
         //异步的状态转化成失败的状态
         return Promise.reject(err);

@@ -14,11 +14,11 @@ const registerData = ref({
 const rules = ref({
     username: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
-        { min: 5, max: 16, message: '用户名长度在5到15个字符之间', trigger: 'blur' }
+        { min: 5, max: 16, message: '用户名长度需在5到15个字符之间', trigger: 'blur' }
     ],
     password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
-        { min: 5, max: 16, message: '密码长度在5到15个字符之间', trigger: 'blur' }
+        { min: 5, max: 16, message: '密码长度需在5到15个字符之间', trigger: 'blur' }
     ],
     rePassword: [
         { required: true, message: '请再次输入密码', trigger: 'blur' },
@@ -34,8 +34,6 @@ const rules = ref({
         }
     ]
 })
-import { useStore } from 'vuex';
-const store = useStore();
 //调用后台接口进行注册
 import {userRegisterService, userLoginService} from '@/api/user.js'
 //注册函数
@@ -57,13 +55,7 @@ const login = async() => {
     //将token存储到pinia中
     tokenStore.setToken(result.data);
     //跳转到首页
-    console.log(registerData.value.username);
-    
-    if(registerData.value.username === 'w'){
-        store.commit('setTrue');
-        console.log(store);
-        
-    }
+    console.log('用户名='+registerData.value.username);
     router.push('/')
 }
 //表单数据重置函数

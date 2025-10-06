@@ -5,10 +5,11 @@ import {
 } from '@element-plus/icons-vue'
 
 import { ref } from 'vue'
-//全局vuex
-import { useStore } from 'vuex';
-const store = useStore();
-const count = store.state.count;
+//判断用户类型
+import useUserInfoStore from '@/stores/userInfo';
+const userInfoStore = useUserInfoStore();
+const count = userInfoStore.judgeRoot();
+console.log('count=  ' + count)
 //文章分类数据模型
 const categorys = ref([
     {
@@ -215,6 +216,21 @@ const deleteArticle = (row) => {
             })
         })
 }
+//清空添加文章抽屉
+const clearDrawer = () =>{
+    visibleDrawer.value = true
+    isShow.value = true
+    titleChoose.value = '添加文章'
+    articleModel.value = {
+        id: '',
+        title: '',
+        categoryId: '',
+        coverImg: '',
+        content: '请输入内容',
+        state: ''
+    }
+}
+const tupian = "`../src/assets/${articleModel.coverImg}`";
 </script>
 <template>
     <el-card class="page-container">
@@ -222,7 +238,7 @@ const deleteArticle = (row) => {
             <div class="header">
                 <span>文章管理</span>
                 <div class="extra">
-                    <el-button type="primary" @click="visibleDrawer = true, isShow = true, titleChoose = '添加文章'" v-show="count">添加文章</el-button>
+                    <el-button type="primary" @click="clearDrawer" v-show="count">添加文章</el-button>
                 </div>
             </div>
         </template>
@@ -273,7 +289,7 @@ const deleteArticle = (row) => {
             layout="jumper, total, sizes, prev, pager, next" background :total="total" @size-change="onSizeChange"
             @current-change="onCurrentChange" style="margin-top: 20px; justify-content: flex-end" />
         <!-- 抽屉 -->
-        <el-drawer v-model="visibleDrawer" :title="titleChoose" direction="rtl" size="50%">
+        <el-drawer v-model="visibleDrawer" :title="titleChoose" direction="rtl" size="50%" :style="{ backgroundImage: `url(${tupian})` }">
             <!-- 添加文章表单 -->
             <el-form :model="articleModel" label-width="100px">
                 <el-form-item label="文章标题">
@@ -285,10 +301,10 @@ const deleteArticle = (row) => {
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="文章封面">
+                <el-form-item label="文章封面" v-show="count">
 
                     <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="true" action="/api/upload"
-                        name="file" :headers="{ 'Authorization': tokenStore.token }" :on-success="uploadSuccess">
+                        name="file" :headers="{ 'Authorization': tokenStore.token }" :on-success="uploadSuccess" >
                         <img v-if="articleModel.coverImg" :src="`../src/assets/${articleModel.coverImg}`" class="avatar" />
                         <el-icon v-else class="avatar-uploader-icon">
                             <Plus />
@@ -357,7 +373,25 @@ const deleteArticle = (row) => {
         }
     }
 }
-
+.article-drawer {
+  // 设置背景图片
+  background-image: url('${tupian}'); // 替换为你的图片路径
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  // 确保抽屉内容区域有合适的样式
+  :deep(.el-drawer__header) {
+    background-color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 0;
+    border-bottom: 1px solid #eaeaea;
+    padding: 20px;
+  }
+  
+  :deep(.el-drawer__body) {
+    padding: 0;
+  }
+}
 .editor {
     width: 100%;
 

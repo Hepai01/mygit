@@ -16,3 +16,21 @@ export const userLoginService = (loginData) => {
     }
     return request.post('/user/login',params);
 }
+//获取个人信息
+export const userInfoService = ()=>{
+    return request.get('/user/userInfo');
+}
+//修改个人信息
+export const userInfoUpdateService = (userInfo) => {
+    return request.put('/user/update',userInfo)
+}
+//修改头像
+export const userAvatarUpdateService = (avatarUrl) => {
+    let params = new URLSearchParams();
+    params.append('avatarUrl', avatarUrl)
+    return request.patch('/user/updateAvatar', params)
+}
+//修改密码
+export const userPasswordUpdateService = (passwordData) => {
+    return request.patch('/user/updatePwd', passwordData)
+}

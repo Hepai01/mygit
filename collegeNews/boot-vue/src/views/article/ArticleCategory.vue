@@ -115,10 +115,10 @@ const deleteCategory = (row) => {
             })
         })
 }
-//全局vuex
-import { useStore } from 'vuex';
-const store = useStore();
-const count = store.state.count;
+//判断用户类型
+import useUserInfoStore from '@/stores/userInfo';
+const userInfoStore = useUserInfoStore();
+const count = userInfoStore.judgeRoot();
 </script>
 <template>
     <el-card class="page-container">
